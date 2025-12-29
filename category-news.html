@@ -1,0 +1,602 @@
+<!-- VIDEO MODAL -->
+<div id="video-modal" class="video-modal" style="display:none;">
+    <div class="video-modal-backdrop" onclick="closeVideoModal()"></div>
+    <div class="video-modal-content">
+        <span class="video-modal-close" onclick="closeVideoModal()">&times;</span>
+        <video id="modal-video" controls autoplay style="width:100%;max-height:70vh;background:#000;border-radius:10px;outline:none;">
+            <source id="modal-video-src" src="" type="video/mp4">
+            Sizning brauzeringiz video formatini qo‘llab-quvvatlamaydi.
+        </video>
+    </div>
+</div>
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Anime Yangiliklari | Anime Uz</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header class="simple-header">
+        <div class="simple-header-inner">
+            <a href="index.html" class="simple-logo">KIWEI<span>NEWS</span></a>
+            <a href="index.html" class="simple-home-link">Bosh sahifa</a>
+            <div style="flex:1"></div>
+            <div style="max-width:340px;width:100%;position:relative;">
+                <input type="text" id="news-search-input" placeholder="Yangilik qidirish..." style="width:100%;padding:7px 14px;font-size:1rem;border-radius:7px;border:1px solid #d0d6e1;outline:none;">
+                <div id="news-search-dropdown" style="display:none;position:absolute;top:38px;left:0;width:100%;background:#181a20;border-radius:10px;box-shadow:0 2px 12px #0005;z-index:1000;"></div>
+            </div>
+        </div>
+    </header>
+    <main class="news-main news-main-large">
+        <div class="category-title-box">
+            <div class="category-title">ANIME YANGILIKLARI</div>
+        </div>
+        <div class="category-news-grid" id="newsGrid">
+            <!-- Kartochkalar JS orqali dinamik hosil bo'ladi -->
+        </div>
+        <!-- Modal for description -->
+        <div id="desc-modal" class="desc-modal" style="display:none;">
+            <div class="desc-modal-content">
+                <span class="desc-modal-close" onclick="closeDescModal()">&times;</span>
+                <div id="desc-modal-title" class="desc-modal-title"></div>
+                <div id="desc-modal-body" class="desc-modal-body"></div>
+            </div>
+        </div>
+    </main>
+        <div class="category-title-box">
+            <div class="category-title">ANIME YANGILIKLARI</div>
+        </div>
+        <div class="category-news-grid" id="newsGrid">
+            <!-- Kartochkalar JS orqali dinamik hosil bo'ladi -->
+        </div>
+        <!-- Modal for description -->
+        <div id="desc-modal" class="desc-modal" style="display:none;">
+            <div class="desc-modal-content">
+                <span class="desc-modal-close" onclick="closeDescModal()">&times;</span>
+                <div id="desc-modal-title" class="desc-modal-title"></div>
+                <div id="desc-modal-body" class="desc-modal-body"></div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Custom Banner Start -->
+    <div style="max-width:1200px;margin:36px auto 36px auto;padding:32px 0;border-radius:18px;background:linear-gradient(120deg,#3bb6ff 0%,#23243a 100%);display:flex;flex-direction:column;align-items:center;justify-content:center;">
+        <div style="font-size:4rem;font-weight:800;letter-spacing:2px;color:#fff;opacity:0.25;line-height:1;">KIWEI NEWS</div>
+        <div style="display:flex;align-items:center;gap:18px;margin-top:-48px;margin-bottom:12px;width:100%;justify-content:center;">
+            <div style="font-size:2.2rem;font-weight:700;color:#fff;text-shadow:0 2px 8px #0005;">Kiwei News</div>
+        </div>
+        <div style="font-size:1.25rem;color:#fff;text-align:center;margin-bottom:24px;max-width:600px;">Kiwei News ga obuna bo'ling va so'nggi yangiliklardan xabardor bo'ling!</div>
+        <a href="https://t.me/Himmel_NEWS" target="_blank" style="background:#19b5ff;color:#fff;font-weight:700;padding:12px 38px;border-radius:12px;font-size:1.18rem;text-decoration:none;box-shadow:0 2px 12px #0002;transition:background 0.18s;">Ko'rish</a>
+    </div>
+    <!-- Custom Banner End -->
+    <script>
+        // Kartochkalar uchun massiv (istalgancha yangilik qo'shish mumkin)
+        const descData = [
+            {
+                img: 'https://avatars.mds.yandex.net/i?id=7a8df61f39a1ec903a34c98a0e5871d0cd8c38bc-8497350-images-thumbs&n=13',
+                title: 'Clash of Clans animatsiyon loyihasi anons qilindi!',
+                short: 'Clash of Clans animatsion loyihasi bo‘yicha - nima ma’lum Supercell va Netflix Clash of Clans dunyo...',
+                date: '26 May 2025',
+                url: 'anime-preview-1.html',
+                desc: 'Netflix va Supercell hamkorligida mashhur Clash of Clans o‘yinining animatsion seriali tayyorlanmoqda. Serial 2026-yilda premyera qilinadi.'
+            },
+            {
+                img: 'images/anime4.jpg',
+                title: 'Anime Awards',
+                short: 'Anime fandoni paydo bo‘lgandan beri biz doimo qaysi anime eng yaxshi ekanligi haqida bahs va muno...',
+                date: '26 May 2025',
+                url: 'anime-preview-2.html',
+                desc: '2025-yilgi Anime Awards g‘oliblari e’lon qilindi. Solo Leveling — yilning eng yaxshi animesi deb topildi.'
+            },
+            {
+                img: 'images/anime5.jpg',
+                title: 'To Be Hero X',
+                short: '"To Be Hero X" — bu kutilmagan burilishlari bilan tomoshabinni o‘ziga tortadigan anime. Ammo u fa...',
+                date: '10 June 2025',
+                url: 'anime-preview-3.html',
+                desc: 'To Be Hero X — bu kutilmagan burilishlari bilan mashhur bo‘lgan yangi anime. Tomoshabinlarni o‘ziga jalb qilmoqda.'
+            },
+            {
+                img: 'images/anime1.jpg',
+                title: 'The Legend of Hei - Qoravoy Afsonasi',
+                short: 'Xitoy animatsiyasidan yana bir yangilik. Ushbu yil boshida Xitoyning dunyo bo‘ylab rekord darajada k...',
+                date: '30 June 2025',
+                url: 'anime-preview-4.html',
+                desc: 'Xitoy animatsiyasining eng mashhur asarlaridan biri. Qahramonning sarguzashtlari va do‘stlik haqida hikoya.'
+            },
+              {
+                img: 'images/anime1.jpg',
+                title: 'The Legend of Hei - Qoravoy Afsonasi',
+                short: 'Xitoy animatsiyasidan yana bir yangilik. Ushbu yil boshida Xitoyning dunyo bo‘ylab rekord darajada k...',
+                date: '30 June 2025',
+                url: 'anime-preview-5.html',
+                desc: 'Xitoy animatsiyasining eng mashhur asarlaridan biri. Qahramonning sarguzashtlari va do‘stlik haqida hikoya.'
+            },
+            // Yangi yangiliklar qo'shish uchun shu yerga yana obyekt qo'shing
+        ];
+        window.descData = descData;
+
+        // Kartochkalarni dinamik hosil qilish
+        const newsGrid = document.getElementById('newsGrid');
+        descData.forEach((item, idx) => {
+            const card = document.createElement('div');
+            card.className = 'category-news-card';
+            card.onclick = () => {
+                if(item.url) window.location.href = item.url;
+            };
+            card.innerHTML = `
+                <img src="${item.img}" alt="${item.title}" class="category-news-img" onerror="this.src='https://placehold.co/400x400?text=Anime'">
+                <div class="category-news-content">
+                    <div class="category-news-title">${item.title}</div>
+                    <div class="category-news-short">${item.short}</div>
+                    <div class="category-news-date"><span>📅</span> ${item.date}</div>
+                </div>
+            `;
+            newsGrid.appendChild(card);
+        });
+
+        // Modal funksiyasi endi ishlatilmaydi
+        function closeDescModal() {
+            document.getElementById('desc-modal').style.display = 'none';
+        }
+        window.onclick = function(event) {
+            const modal = document.getElementById('desc-modal');
+            if (event.target === modal) closeDescModal();
+        }
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') closeDescModal();
+        });
+    </script>
+    <style>
+        .simple-header {
+            width: 100%;
+            background: linear-gradient(90deg, #23243a 60%, #23243aee 100%);
+            box-shadow: 0 2px 12px #0002;
+            padding: 0;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 1000;
+        }
+                body {
+                    padding-top: 64px;
+                }
+                @media (max-width: 700px) {
+                    body { padding-top: 48px; }
+                }
+        .simple-header-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 64px;
+            padding: 0 24px;
+        }
+        .simple-logo {
+            color: #fff;
+            font-size: 2rem;
+            font-weight: 700;
+            text-decoration: none;
+            letter-spacing: 1px;
+        }
+        .simple-logo span {
+            color: #3bb6ff;
+        }
+        .simple-home-link {
+            color: #fff;
+            background: #3bb6ff;
+            padding: 8px 20px;
+            border-radius: 6px;
+            font-size: 1.08rem;
+            font-weight: 500;
+            text-decoration: none;
+            transition: background 0.2s, color 0.2s;
+            margin-left: 16px;
+        }
+        .simple-home-link:hover {
+            background: #fff;
+            color: #3bb6ff;
+        }
+        @media (max-width: 700px) {
+            .simple-header-inner { height: 48px; padding: 0 8px; }
+            .simple-logo { font-size: 1.3rem; }
+            .simple-home-link { font-size: 0.98rem; padding: 6px 12px; }
+        }
+        .desc-modal {
+            display: flex;
+            position: fixed;
+            z-index: 9999;
+            left: 0; top: 0; width: 100vw; height: 100vh;
+            background: rgba(0,0,0,0.45);
+            align-items: center;
+            justify-content: center;
+        }
+        .desc-modal-content {
+            background: #fff;
+            color: #23243a;
+            border-radius: 14px;
+            padding: 32px 24px 24px 24px;
+            max-width: 90vw;
+            width: 400px;
+            box-shadow: 0 8px 32px #0007;
+            position: relative;
+            text-align: left;
+        }
+        .desc-modal-close {
+            position: absolute;
+            top: 12px;
+            right: 18px;
+            font-size: 2rem;
+            color: #3bb6ff;
+            cursor: pointer;
+        }
+        .desc-modal-title {
+            font-size: 1.18rem;
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+        .desc-modal-body {
+            font-size: 1.05rem;
+        }
+        .category-title-box {
+            background: #eaf3ff;
+            border-radius: 6px;
+            margin: 32px auto 32px auto;
+            max-width: 90vw;
+            padding: 8px 0 8px 24px;
+        }
+        .category-title {
+            color: #3bb6ff;
+            font-size: 2rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+        .category-news-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 32px;
+            margin: 0 auto;
+            max-width: 1200px;
+        }
+        .category-news-card {
+            background: #fff;
+            border-radius: 18px;
+            overflow: hidden;
+            box-shadow: 0 2px 12px #0002;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 340px;
+            cursor: pointer;
+            transition: box-shadow 0.2s, transform 0.2s;
+        }
+        .category-news-card:hover {
+            box-shadow: 0 4px 24px #3bb6ff55;
+            transform: translateY(-4px) scale(1.03);
+        }
+        .category-news-img {
+            width: 100%;
+            height: 260px;
+            object-fit: cover;
+            background: #222;
+        }
+        .category-news-content {
+            padding: 18px 18px 14px 18px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+        }
+        .category-news-title {
+            color: #3bb6ff;
+            font-size: 1.18rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+        .category-news-short {
+            color: #222;
+            font-size: 1.04rem;
+            margin-bottom: 10px;
+            font-weight: 400;
+            line-height: 1.4;
+        }
+        .category-news-date {
+            color: #888;
+            font-size: 0.98rem;
+            margin-top: 2px;
+            font-weight: 400;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        @media (max-width: 700px) {
+            .category-title-box { padding: 8px 0 8px 8px; }
+            .category-title { font-size: 1.3rem; }
+            .category-news-img { height: 160px; }
+        }
+    </style>
+
+<script>
+// Yangiliklar qidiruvi (faqat category-news.html uchun)
+document.addEventListener('DOMContentLoaded', function() {
+    const input = document.getElementById('news-search-input');
+    const dropdown = document.getElementById('news-search-dropdown');
+    if (!input || !dropdown) return;
+    input.addEventListener('input', function() {
+        const val = input.value.trim().toLowerCase();
+        if (!val) {
+            dropdown.style.display = 'none';
+            dropdown.innerHTML = '';
+            return;
+        }
+        const results = (window.descData || []).filter(item =>
+            item.title.toLowerCase().includes(val) ||
+            item.short.toLowerCase().includes(val) ||
+            item.desc.toLowerCase().includes(val)
+        );
+        if (results.length === 0) {
+            dropdown.innerHTML = '<div style="color:#fff;padding:12px 18px;">Hech narsa topilmadi</div>';
+            dropdown.style.display = 'block';
+            return;
+        }
+        dropdown.innerHTML = results.map(item =>
+            `<a href="${item.url}" target="_blank">
+                <img src="${item.img}" alt="${item.title}" onerror="this.src='https://placehold.co/38x38?text=Anime'">
+                <div>
+                  <div class="dropdown-title">${item.title}</div>
+                  <div class="dropdown-short">${item.short}</div>
+                </div>
+            </a>`
+        ).join('');
+        dropdown.style.display = 'block';
+    });
+    document.addEventListener('click', function(e) {
+        if (!dropdown.contains(e.target) && e.target !== input) {
+            dropdown.style.display = 'none';
+        }
+    });
+});
+</script>
+</style>
+
+<!-- VIDEOLAR BLOKI -->
+<section class="videos-section">
+    <div class="videos-title">Videolar <span>&#8250;</span></div>
+    <hr class="videos-divider">
+    <div class="videos-grid">
+        <!-- Video Card 1 -->
+        <div class="video-card">
+            <div class="video-thumb">
+                <img src="https://static.animecorner.me/2023/12/bunny-girl-santa.jpg" alt="Rascal Does Not Dream of Santa Claus">
+                <button class="video-play" title="Play video" onclick="openVideoModal('videos/naruto.mp4')"><span>&#9654;</span></button>
+            </div>
+            <div class="video-info">
+                <div class="video-tags">
+                    <span>#bunnygirlsenpai</span>
+                    <span>#santa</span>
+                </div>
+                <div class="video-title">Rascal Does Not Dream of Santa Claus</div>
+                <div class="video-date"><span>📅</span> 26 May 2025</div>
+            </div>
+        </div>
+        <!-- Video Card 2 -->
+        <div class="video-card">
+            <div class="video-thumb">
+                <img src="https://staticg.sportskeeda.com/editor/2023/10/2e2e2-16969396438241-1920.jpg" alt="DanDaDan">
+                <button class="video-play" title="Play video" onclick="openVideoModal('videos/dandadan.mp4')"><span>&#9654;</span></button>
+            </div>
+            <div class="video-info">
+                <div class="video-tags">
+                    <span>#dandadan</span>
+                    <span>#shonen</span>
+                </div>
+                <div class="video-title">DanDaDan</div>
+                <div class="video-date"><span>📅</span> 26 May 2025</div>
+            </div>
+        </div>
+        <!-- Video Card 3 -->
+        <div class="video-card">
+            <div class="video-thumb">
+                <img src="https://staticg.sportskeeda.com/editor/2023/10/2e2e2-16969396438241-1920.jpg" alt="Demo Video">
+                <button class="video-play" title="Play video" onclick="openVideoModal('videos/aot.mp4')"><span>&#9654;</span></button>
+            </style>
+
+            <script>
+            function openVideoModal(src) {
+                var modal = document.getElementById('video-modal');
+                var video = document.getElementById('modal-video');
+                var source = document.getElementById('modal-video-src');
+                source.src = src;
+                video.load();
+                modal.style.display = 'flex';
+                setTimeout(() => { video.play(); }, 100);
+            }
+            function closeVideoModal() {
+                var modal = document.getElementById('video-modal');
+                var video = document.getElementById('modal-video');
+                video.pause();
+                video.currentTime = 0;
+                modal.style.display = 'none';
+            }
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape') closeVideoModal();
+            });
+            </script>
+            <style>
+                .video-modal {
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    position: fixed;
+                    z-index: 9999;
+                    left: 0; top: 0; width: 100vw; height: 100vh;
+                    background: rgba(0,0,0,0.45);
+                }
+                .video-modal-backdrop {
+                    position: absolute;
+                    left: 0; top: 0; width: 100vw; height: 100vh;
+                    background: rgba(0,0,0,0.45);
+                    z-index: 1;
+                }
+                .video-modal-content {
+                    position: relative;
+                    z-index: 2;
+                    background: #23243a;
+                    border-radius: 14px;
+                    padding: 24px 18px 18px 18px;
+                    max-width: 90vw;
+                    box-shadow: 0 8px 32px #0007;
+                    min-width: 320px;
+                }
+                .video-modal-close {
+                    position: absolute;
+                    top: 8px;
+                    right: 18px;
+                    font-size: 2rem;
+                    color: #3bb6ff;
+                    cursor: pointer;
+                    z-index: 3;
+                }
+            </style>
+            </div>
+            <div class="video-info">
+                <div class="video-tags">
+                    <span>#demo</span>
+                </div>
+                <div class="video-title">Demo Video</div>
+                <div class="video-date"><span>📅</span> 28 Dec 2025</div>
+            </div>
+        </div>
+    </div>
+</section>
+<style>
+    .videos-section {
+        margin: 64px auto 32px auto;
+        max-width: 1200px;
+        padding: 0 16px;
+    }
+    .videos-title {
+        color: #3bb6ff;
+        font-size: 2.2rem;
+        font-weight: 700;
+        margin-bottom: 8px;
+        margin-left: 8px;
+        letter-spacing: 1px;
+    }
+    .videos-title span {
+        color: #3bb6ff;
+        font-size: 2.2rem;
+        vertical-align: middle;
+    }
+    .videos-divider {
+        border: none;
+        border-top: 2px solid #3bb6ff22;
+        margin-bottom: 32px;
+    }
+    .videos-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+        gap: 32px;
+    }
+    .video-card {
+        background: #181a20;
+        border-radius: 14px;
+        overflow: hidden;
+        box-shadow: 0 2px 12px #0002;
+        display: flex;
+        flex-direction: column;
+        min-height: 340px;
+        transition: box-shadow 0.2s, transform 0.2s;
+        position: relative;
+    }
+    .video-card:hover {
+        box-shadow: 0 4px 24px #3bb6ff55;
+        transform: translateY(-4px) scale(1.03);
+    }
+    .video-thumb {
+        position: relative;
+        width: 100%;
+        height: 220px;
+        background: #222;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .video-thumb img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+    }
+    .video-play {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: #3bb6ff;
+        border: none;
+        border-radius: 50%;
+        width: 56px;
+        height: 56px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 2.2rem;
+        color: #fff;
+        cursor: pointer;
+        box-shadow: 0 2px 12px #0005;
+        opacity: 0.92;
+        transition: background 0.2s, opacity 0.2s;
+    }
+    .video-play:hover {
+        background: #fff;
+        color: #3bb6ff;
+        opacity: 1;
+    }
+    .video-info {
+        padding: 18px 18px 14px 18px;
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+        background: #181a20;
+    }
+    .video-tags {
+        margin-bottom: 8px;
+    }
+    .video-tags span {
+        display: inline-block;
+        background: #23243a;
+        color: #3bb6ff;
+        border-radius: 4px;
+        font-size: 0.95rem;
+        padding: 2px 10px;
+        margin-right: 6px;
+        margin-bottom: 2px;
+    }
+    .video-title {
+        color: #fff;
+        font-size: 1.18rem;
+        font-weight: 700;
+        margin-bottom: 8px;
+    }
+    .video-date {
+        color: #3bb6ff;
+        font-size: 0.98rem;
+        margin-top: 2px;
+        font-weight: 400;
+        display: flex;
+        align-items: center;
+        gap: 4px;
+    }
+    @media (max-width: 700px) {
+        .videos-title { font-size: 1.3rem; }
+        .videos-grid { gap: 16px; }
+        .video-thumb { height: 140px; }
+    }
+</style>
+</body>
+</html>
